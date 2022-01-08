@@ -1,68 +1,71 @@
 // ignore_for_file: avoid_print
 
 import 'dart:io';
-import 'dart:math';
+import 'game.dart';
 
 import 'game.dart';
 
 void main() {
-
   while (true) {
-    stdout.write('Enter a maximum number to random: ');
-    var randomToUser  = int.tryParse(stdin.readLineSync()!); //! คือไม่ให้เป็น null
-    if(randomToUser == null){
-      continue;
-    }
-    var game = Game(maxRandom:randomToUser);
-    print('');
-    print('╔════════════════════════════════════════');
-    print('║            GUESS THE NUMBER            ');
-    print('╟────────────────────────────────────────');
-    var isCorrect = false;
-    var guessCount = 0;
+    playGame();
+    String? input;
 
     do {
-      stdout.write('║ Guess the number between 1 and ${game.maxRandom}:');
-      var input = stdin.readLineSync();
-      var guess = int.tryParse(input!);
+      stdout.write('Play again? (Y/N): ');
+      input = stdin.readLineSync();
+    } while (input!.toLowerCase() != 'y' && input.toLowerCase() != 'n');
 
-      if (guess == null) {
-        continue;
-      }
-
-      guessCount++;
-      if (game.doGuess(guess) == 1) {
-        print('║ ➜ $guess is TOO HIGH! ▲');
-        print('╟────────────────────────────────────────');
-      } else if (game.doGuess(guess) == -1) {
-        print('║ ➜ $guess is TOO LOW! ▼');
-        print('╟────────────────────────────────────────');
-      } else {
-        print('║ ➜ $guess is CORRECT ❤️, total guesses: $guessCount');
-        print('╟────────────────────────────────────────');
-        isCorrect = true;
-        Game.myList.add(guessCount);
-      }
-    } while (!isCorrect);
-
-    print('║                 THE END                ');
-    print('╚════════════════════════════════════════');
-
-    var get = "";
-    while (true) {
-      stdout.write('play again? (Y/N): ');
-      get = stdin.readLineSync()!;
-      if (get.toUpperCase() == 'Y') {
-        break;
-      }
-      else if (get.toUpperCase() == 'N') {
-        print("\n\nYou've played ${Game.myList.length} games");
-        for(int i=0; i<Game.myList.length; i++){
-          print('🚀 Game #${i+1}: ${Game.myList[i]} guesses');
-        }
-        exit(0);
-      }
-    }
-   print('');
+    if (input.toLowerCase() == 'n') break;
   }
+
+  print('\n\nYou\'ve played ${Game.guessCountList.length} games');
+  for (var i = 0; i < Game.guessCountList.length; i++) {
+    print('🚀 Game #${i + 1}: ${Game.guessCountList[i]} guesses');
+  }
+
+}
+
+void playGame() {
+  int? maxRandom;
+  do {
+    stdout.write('\nEnter a maximum number to random: ');
+    var input = stdin.readLineSync();
+    maxRandom = int.tryParse(input!);
+  } while (maxRandom == null);
+
+  var game = Game(maxRandom: maxRandom);
+  var isCorrect = false;
+
+  print('');
+  print('╔════════════════════════════════════════');
+  print('║            GUESS THE NUMBER            ');
+  print('╟────────────────────────────────────────');
+
+  do {
+    stdout.write('║ Guess the number between 1 and $maxRandom: ');
+    var input = stdin.readLineSync();
+    var guess = int.tryParse(input!);
+    if (guess == null) {
+      continue;
+    }
+
+    var result = game.doGuess(guess);
+
+    if (result == 1) {
+      print('║ ➜ $guess is TOO HIGH! ▲');
+      print('╟────────────────────────────────────────');
+    } else if (result == -1) {
+      print('║ ➜ $guess is TOO LOW! ▼');
+      print('╟────────────────────────────────────────');
+    } else if (result == 0) {
+      print('║ ➜ $guess is CORRECT ❤, total guesses: ${game.guessCount}');
+      print('╟────────────────────────────────────────');
+      isCorrect = true;
+      //Game.guessCountList.add(game.guessCount);
+      game.addCountList();
+    }
+  } while (!isCorrect);
+
+  print('║                 THE END                ');
+  print('╚════════════════════════════════════════');
 }
