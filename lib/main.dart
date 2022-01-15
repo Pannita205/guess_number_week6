@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'GUESS THE NUMBER',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.teal,
       ),
       home: HomePage(),
     );
@@ -38,11 +38,11 @@ class HomePage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.purple.shade50,
+            color: Colors.lime.shade50,
             borderRadius: BorderRadius.circular(16.0),
             boxShadow: [
               BoxShadow(
-                color: Colors.purple.shade100,
+                color: Colors.lightGreenAccent.shade100,
                 offset: Offset(5.0, 5.0),
                 spreadRadius: 2.0,
                 blurRadius: 5.0,
@@ -78,12 +78,12 @@ class HomePage extends StatelessWidget {
                         Text('GUESS',
                             style: TextStyle(
                                 fontSize: 70.0,
-                                color: Colors.purple.shade200)),
+                                color: Colors.brown.shade200)),
                         Text(
                           'THE NUMBER',
                           style: TextStyle(
                             fontSize: 25.0,
-                            color: Colors.purple.shade600,
+                            color: Colors.brown.shade600,
                             //fontWeight: FontWeight.bold,
                           ),
                         ),
